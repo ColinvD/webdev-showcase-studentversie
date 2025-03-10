@@ -70,7 +70,7 @@
 }
 
 .profile-content__institute {
-/*    color: rgba(39, 140, 39, 0.96);*/
+    /*    color: rgba(39, 140, 39, 0.96);*/
     margin-top: 0px;
     font-size: 14px;
 }
@@ -80,7 +80,8 @@
     color: #0072bbff;
     display: flex;
 }
-.profile-content__element-header{
+
+.profile-content__element-header {
     height: 50px;
 }
 
@@ -122,8 +123,9 @@
         display: flex;
         justify-content: space-evenly;
     }
+
     .profile-content__element-list-colomn {
-/*        display: flex;*/
+        /*        display: flex;*/
         width: 200px;
     }
 }

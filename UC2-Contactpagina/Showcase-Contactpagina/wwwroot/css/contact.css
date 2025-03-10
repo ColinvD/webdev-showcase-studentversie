@@ -1,0 +1,13 @@
+﻿html {
+    font-size: 14px;
+}
+
+input {
+    float: right;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}

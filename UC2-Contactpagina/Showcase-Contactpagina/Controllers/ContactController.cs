@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Mail;
 using System.Net;
+using System.Net.Mail;
 using Showcase_Contactpagina.Models;
 using System.Numerics;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Diagnostics;
 
 namespace Showcase_Contactpagina.Controllers
 {
@@ -50,8 +51,8 @@ namespace Showcase_Contactpagina.Controllers
             //Hint: vergeet niet om de mailfunctionaliteit werkend te maken in ShowcaseAPI > Controllers > MailController.cs,
             //      nadat je een account hebt aangemaakt op Mailtrap (of een alternatief).
 
-            HttpResponseMessage response = new HttpResponseMessage(); // Vervang deze regel met het POST-request
-
+            HttpResponseMessage response = await _httpClient.PostAsync("/api/Mail", content); // Vervang deze regel met het POST-request
+            
             if(!response.IsSuccessStatusCode)
             {
                 ViewBag.Message = "Er is iets misgegaan";
@@ -59,7 +60,8 @@ namespace Showcase_Contactpagina.Controllers
             }
 
             ViewBag.Message = "Het contactformulier is verstuurd";
-            
+
+            ModelState.Clear();
             return View();
         }
     }

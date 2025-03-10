@@ -1,27 +1,39 @@
-/*mobile version*/
-
-.page {
-    display: flex;
-    flex-direction: column;
-    font-family: Arial;
+html {
+    font-size: 14px;
 }
 
-.contact {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.text-neongreen {
+    color: #39ff14ff !important;
 }
 
-.form-contactpagina__inputelement {
-    display: flex;
-    flex-direction: row;
-    margin: 15px 0px 15px 0px
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
 }
 
-.fx-col {
-    flex-direction: column;
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-@media only screen and (min-width: 800px) {
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #070707ff;
+    color: #f7fff6ff;
+}
+
+.navbar-toggler-icon {
+    background-color: #39ff14ff; /* Dit bepaalt de kleur */
+    -webkit-mask-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='black' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    mask-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='black' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
 }
