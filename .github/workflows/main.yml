@@ -37,7 +37,7 @@ jobs:
 #         port: ${{ secrets.PORT }}
 #         source: "./publish/"
 #         target: "/pad/naar/server"
-jobs:
+# jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
