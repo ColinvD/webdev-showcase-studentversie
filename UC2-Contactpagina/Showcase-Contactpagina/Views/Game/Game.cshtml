@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "Game";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Racing Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/game.css" />
+</head>
+<body>
+    <div id="username-label">Ingelogd als: @ViewBag.Username</div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <script>
+        // Zet de gebruikersnaam als globale JS-variabele
+        const username = "@ViewBag.Username";
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.85.2/dist/phaser-arcade-physics.min.js"></script>
+    <script src="~/js/Racinggame.js"></script>
+</body>
+</html>

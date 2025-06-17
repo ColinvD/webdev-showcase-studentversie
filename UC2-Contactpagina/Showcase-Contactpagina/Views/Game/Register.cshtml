@@ -1,0 +1,17 @@
+﻿@model Showcase_Contactpagina.Models.User
+
+<h2>Registreren</h2>
+<form asp-action="Register" method="post">
+    <label>Username</label>
+    <input asp-for="Username" />
+    <label>Email</label>
+    <input asp-for="Email" />
+    <label>Wachtwoord</label>
+    <input type="password" asp-for="PasswordHash" />
+    <label>Rol</label>
+    <select asp-for="Role">
+        <option value="Normal">Normale Speler</option>
+        <option value="Paid">Betaalde Speler</option>
+    </select>
+    <button type="submit">Registreer</button>
+</form>

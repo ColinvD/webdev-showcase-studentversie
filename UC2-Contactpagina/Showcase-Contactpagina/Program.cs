@@ -1,8 +1,12 @@
+using Showcase_Contactpagina.Hubs;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
+builder.Services.AddSignalR();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -18,11 +22,14 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHub<GameHub>("/gamehub");
 
 app.Run();

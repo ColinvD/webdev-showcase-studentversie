@@ -1,0 +1,22 @@
+﻿html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #111;
+}
+
+canvas {
+    display: block;
+    margin: 0 auto;
+    background-color: #222;
+    border: 2px solid #fff;
+}
+
+#username-label {
+    position: absolute;
+/*    top: 10px;*/
+    left: 10px;
+    color: white;
+    font-family: Arial, sans-serif;
+    z-index: 100;
+}
