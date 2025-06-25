@@ -12,10 +12,9 @@
 </head>
 <body>
     <div id="username-label">Ingelogd als: @ViewBag.Username</div>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div id="phaser-container"></div>
 
     <script>
-        // Zet de gebruikersnaam als globale JS-variabele
         const username = "@ViewBag.Username";
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>

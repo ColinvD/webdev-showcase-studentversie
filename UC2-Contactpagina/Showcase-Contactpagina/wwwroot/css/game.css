@@ -5,12 +5,12 @@
     background-color: #111;
 }
 
-canvas {
+/*canvas {
     display: block;
     margin: 0 auto;
     background-color: #222;
     border: 2px solid #fff;
-}
+}*/
 
 #username-label {
     position: absolute;
