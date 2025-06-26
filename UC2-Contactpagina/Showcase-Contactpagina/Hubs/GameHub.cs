@@ -26,9 +26,9 @@ namespace Showcase_Contactpagina.Hubs
 
             await base.OnDisconnectedAsync(exception);
         }
-        public async Task UpdatePosition(string username, float x, float y)
+        public async Task UpdatePlayer(string username, float x, float y, float angle)
         {
-            await Clients.Others.SendAsync("ReceivePlayerPosition", username, x, y);
+            await Clients.Others.SendAsync("ReceivePlayer", username, x, y, angle);
         }
     }
 }
