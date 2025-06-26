@@ -38,7 +38,7 @@ namespace Showcase_Contactpagina.Controllers
             {
                 // Simpele sessie login (uit te breiden)
                 HttpContext.Session.SetString("Username", user.Username);
-                HttpContext.Session.SetString("IsBetaald", user.Role == UserRole.Paid ? "true" : "false");
+                HttpContext.Session.SetString("Role", user.Role == UserRole.Paid ? "Betaald" : "Normaal");
 
                 return RedirectToAction("Play", "Game");
 
@@ -64,7 +64,7 @@ namespace Showcase_Contactpagina.Controllers
             }
 
             ViewBag.Username = username;
-            ViewBag.IsBetaald = HttpContext.Session.GetString("IsBetaald") == "true";
+            ViewBag.IsBetaald = HttpContext.Session.GetString("Role");
 
             return View("Game");
         }

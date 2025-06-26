@@ -1,9 +1,20 @@
-﻿const connection = new signalR.HubConnectionBuilder()
+﻿const container = document.getElementById('phaser-container');
+const username = container.dataset.username;
+const role = container.dataset.role;
+
+// Controleer toegang
+const canBoost = role === "Betaald";
+console.log("Username:", username);
+console.log("Role:", role);
+console.log("Can boost:", canBoost);
+
+const connection = new signalR.HubConnectionBuilder()
     .withUrl("/gamehub?username=" + encodeURIComponent(username))
     .build();
 
 const otherPlayers = {}; // { username: {x, y} }
 const carSizes = 0.05;
+
 
 //const player = {
 //    x: 400,
@@ -59,8 +70,7 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('white', 'https://labs.phaser.io/assets/particles/white.png');
-        this.load.image('grey', '/images/GameAssets/GreyParticle.png');
+        this.load.image('white', '/images/GameAssets/WhiteParticle.png');
         this.load.image('car', '/images/GameAssets/CarSprite.png');
         this.load.image('track', '/images/GameAssets/Track.png');
     }
@@ -68,7 +78,7 @@ class GameScene extends Phaser.Scene {
     create() {
         this.add.image(0, 0, 'track').setOrigin(0, 0);
 
-        this.tireSmoke = this.add.particles(0, 0, 'grey', {
+        this.tireSmoke = this.add.particles(0, 0, 'white', {
             lifespan: 300,
             speed: 10,
             scale: { start: 0.3, end: 0 },
@@ -77,6 +87,16 @@ class GameScene extends Phaser.Scene {
             emitting: false,
         });
         this.tireSmoke.particleTint = '0x808080';
+
+        this.boostSmoke = this.add.particles(0, 0, 'white', {
+            lifespan: 300,
+            speed: 10,
+            scale: { start: 0.3, end: 0 },
+            blendMode: 'NORMAL',
+            quantity: 1,
+            emitting: false,
+        });
+        this.boostSmoke.particleTint = '0xff0000';
 
         this.myPlayer = this.physics.add.sprite(400, 400, 'car').setScale(carSizes).refreshBody();
         this.myPlayer.tint = getVisibleRandomHexColor();
@@ -90,13 +110,21 @@ class GameScene extends Phaser.Scene {
         });
 
         this.tireSmoke.startFollow(this.myPlayer);
-        console.log(this.cursors);
+        this.boostSmoke.startFollow(this.myPlayer);
 
         this.speed = 0;
         this.maxSpeed = 500;
-        this.acceleration = 5;
+        this.acceleration = 3;
         this.friction = 3;
 
+        // Boost & handrem status
+        this.isBoosting = false;
+        this.isHandbraking = false;
+        this.baseMaxSpeed = this.maxSpeed;
+        this.boostedMaxSpeed = 800;     // max snelheid tijdens boost
+        this.boostDuration = 1000;      // 1 seconde boost
+        this.boostCooldown = 2000;      // 2 seconden wachten
+        this.lastBoostTime = 0;
     }
 
     update() {
@@ -105,16 +133,38 @@ class GameScene extends Phaser.Scene {
         const isDown = this.cursors.down.isDown || this.wasd.down.isDown;
         const isLeft = this.cursors.left.isDown || this.wasd.left.isDown;
         const isRight = this.cursors.right.isDown || this.wasd.right.isDown;
+        const now = this.time.now;
 
-        //const isMoving = isUp || isDown;
+        // Handrem logica
+        this.isHandbraking = this.cursors.space.isDown;
+
+        // Boost logica
+
+        if (typeof canBoost !== 'undefined' && canBoost) {
+            // Activeer boost
+            const wantsBoost = this.cursors.shift.isDown;
+            if (wantsBoost && !this.isBoosting && now - this.lastBoostTime > this.boostCooldown) {
+                this.isBoosting = true;
+                this.maxSpeed = this.boostedMaxSpeed;
+                this.lastBoostTime = now;
+                this.time.delayedCall(this.boostDuration, () => {
+                    this.isBoosting = false;
+                    this.maxSpeed = this.baseMaxSpeed;
+                    this.boostSmoke.emitting = this.isBoosting;
+                });
+
+                this.boostSmoke.emitting = this.isBoosting;
+            }
+        }
 
         // Versnellen en vertragen
         if (isUp) {
-            this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
+            const accel = this.isBoosting ? this.acceleration * 1.5 : this.acceleration;
+            this.speed = Math.min(this.speed + accel, this.maxSpeed);
         } else if (isDown) {
             this.speed = Math.max(this.speed - this.acceleration, -this.maxSpeed / 2);
         } else {
-            // Wrijving / langzaam afremmen
+            // Geen input: wrijving toepassen
             if (this.speed > 0) {
                 this.speed = Math.max(this.speed - this.friction, 0);
             } else {
@@ -122,15 +172,25 @@ class GameScene extends Phaser.Scene {
             }
         }
 
+        // Stap 2: Handrem OVERSCHRIJFT andere snelheid
+        if (this.isHandbraking) {
+            const brakeStrength = this.friction * 4;
+            if (this.speed > 0) {
+                this.speed = Math.max(this.speed - brakeStrength, 0);
+            } else {
+                this.speed = Math.min(this.speed + brakeStrength, 0);
+            }
+        }
+
         // Slipdetectie moet NA snelheid en input komen
         const isTurning = isLeft || isRight;
-        const isSlipping = Math.abs(this.speed) > 250 && isTurning;
-        const baseTurnRate = isSlipping ? 2 : 4;
-        const speedFactor = Phaser.Math.Clamp(Math.abs(this.speed) / this.maxSpeed, 0.3, 20);
+        const isSlipping = this.isHandbraking || (Math.abs(this.speed) > 250 && isTurning);
+        const baseTurnRate = this.isHandbraking ? 8 : isSlipping ? 3 : 2;
+        const speedFactor = Phaser.Math.Clamp(Math.abs(this.speed) / this.maxSpeed, 0.3, 1);
         const turnRate = baseTurnRate * speedFactor;
         // Roterende besturing (auto draait als hij snelheid heeft)
-        if (Math.abs(this.speed) > 50) {
-            const direction = this.speed > 0 ? 1 : -1;
+        if (Math.abs(this.speed) > 50 || this.isHandbraking) {
+            const direction = this.speed < 0 ? -1 : 1;
 
             if (isLeft) {
                 this.myPlayer.angle -= turnRate * direction;

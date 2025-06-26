@@ -12,11 +12,14 @@
 </head>
 <body>
     <div id="username-label">Ingelogd als: @ViewBag.Username</div>
-    <div id="phaser-container"></div>
+    <div id="phaser-container"
+         data-username="@ViewBag.Username"
+         data-role="@ViewBag.IsBetaald"></div>
 
-    <script>
-        const username = "@ViewBag.Username";
-    </script>
+    @* <script> *@
+    @*     const username = "@ViewBag.Username"; *@
+    @*     const role = "@ViewBag.IsBetaald"; *@
+    @* </script> *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.85.2/dist/phaser-arcade-physics.min.js"></script>
     <script src="~/js/Racinggame.js"></script>
