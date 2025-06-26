@@ -4,22 +4,13 @@ const role = container.dataset.role;
 
 // Controleer toegang
 const canBoost = role === "Betaald";
-console.log("Username:", username);
-console.log("Role:", role);
-console.log("Can boost:", canBoost);
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/gamehub?username=" + encodeURIComponent(username))
     .build();
 
-const otherPlayers = {}; // { username: {x, y} }
+const otherPlayers = {};
 const carSizes = 0.05;
-
-
-//const player = {
-//    x: 400,
-//    y: 400,
-//};
 
 connection.start().then(() => {
     console.log("SignalR connected");
@@ -208,12 +199,6 @@ class GameScene extends Phaser.Scene {
 
         // Laat rook zien bij slippen
         this.tireSmoke.emitting = isSlipping;
-        //if (isSlipping) {
-        //    console.log(this.tireSmoke);
-        //    this.tireSmoke.active = true;
-        //} else if (this.tireSmoke.active == true) {
-        //    this.tireSmoke.active = false;
-        //}
 
         // Verzend locatie voor multiplayer
         if (++frameCount % 5 === 0) {
