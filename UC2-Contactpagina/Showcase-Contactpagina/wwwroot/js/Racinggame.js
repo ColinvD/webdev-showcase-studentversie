@@ -22,18 +22,35 @@ connection.on("ReceivePlayer", (otherUsername, x, y, angle) => {
             const sprite = game.scene.keys['GameScene'].physics.add.sprite(x, y, 'car').setScale(carSizes);
             sprite.tint = getVisibleRandomHexColor();
             sprite.setCollideWorldBounds(true);
-            otherPlayers[otherUsername] = { sprite };
+
+
+            const nameLabel = game.scene.keys['GameScene'].add.text(x, y-40, otherUsername, {
+                font: '14px Arial',
+                fill: '#ffffff',
+                stroke: '#000000',
+                strokeThickness: 2
+            }).setOrigin(0.5, 1);
+            otherPlayers[otherUsername] = {
+                sprite,
+                nameLabel
+            };
+
         }
 
-        const playerSprite = otherPlayers[otherUsername].sprite;
-        playerSprite.setPosition(x, y);
-        playerSprite.setAngle(angle);
+        const player = otherPlayers[otherUsername];
+        player.sprite.setPosition(x, y);
+        player.sprite.setAngle(angle);
+
+        const offsetY = -20;
+        player.nameLabel.setPosition(x, y + offsetY);
+
     }
 });
 
 connection.on("RemovePlayer", (otherUsername) => {
     if (otherPlayers[otherUsername]) {
         otherPlayers[otherUsername].sprite.destroy();
+        otherPlayers[otherUsername].nameLabel.destroy();
         delete otherPlayers[otherUsername];
     }
 });
@@ -99,6 +116,12 @@ class GameScene extends Phaser.Scene {
             left: Phaser.Input.Keyboard.KeyCodes.A,
             right: Phaser.Input.Keyboard.KeyCodes.D,
         });
+        this.nameLabel = this.add.text(0, 0, username, {
+            font: '14px Arial',
+            fill: '#ffffff',
+            stroke: '#000000',
+            strokeThickness: 2
+        }).setOrigin(0.5, 1);
 
         this.tireSmoke.startFollow(this.myPlayer);
         this.boostSmoke.startFollow(this.myPlayer);
@@ -196,6 +219,9 @@ class GameScene extends Phaser.Scene {
         vec.setToPolar(rad, this.speed);
 
         this.myPlayer.setVelocity(vec.x, vec.y);
+
+        const offsetY = -20; // aantal pixels boven de auto
+        this.nameLabel.setPosition(this.myPlayer.x, this.myPlayer.y + offsetY);
 
         // Laat rook zien bij slippen
         this.tireSmoke.emitting = isSlipping;

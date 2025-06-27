@@ -64,7 +64,7 @@ namespace Showcase_Contactpagina.Controllers
             }
 
             ViewBag.Username = username;
-            ViewBag.IsBetaald = HttpContext.Session.GetString("Role");
+            ViewBag.Role = HttpContext.Session.GetString("Role");
 
             return View("Game");
         }

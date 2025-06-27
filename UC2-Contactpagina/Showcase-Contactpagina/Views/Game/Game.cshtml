@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Game";
 }
 <!DOCTYPE html>
@@ -11,10 +10,25 @@
     <link rel="stylesheet" href="~/css/game.css" />
 </head>
 <body>
-    <div id="username-label">Ingelogd als: @ViewBag.Username</div>
+    <div id="generalText">
+        <label id="username-label">Ingelogd als: @ViewBag.Username</label><br />
+        <label id="role-label">Je bent een @(ViewBag.Role?.ToString().ToLower())e speler</label>
+        <div id="controls-text">
+            <p>De "W" toets of pijltje omhoog is vooruit rijden</p>
+            <p>De "S" toets of pijltje omlaag is achteruit rijden</p>
+            <p>De "A" toets of pijltje links is naar links sturen</p>
+            <p>De "D" toets of pijltje rechts is naar rechts sturen</p>
+            <p>De spatie toets is de handrem gebruiken</p>
+            @if ((string)ViewBag.Role == "Betaald")
+            {
+                <p>De shift toets is om een korte boost te gebruiken</p>
+            }
+        </div>
+    </div>
+    
     <div id="phaser-container"
          data-username="@ViewBag.Username"
-         data-role="@ViewBag.IsBetaald"></div>
+         data-role="@ViewBag.Role"></div>
 
     @* <script> *@
     @*     const username = "@ViewBag.Username"; *@

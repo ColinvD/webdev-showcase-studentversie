@@ -12,9 +12,18 @@
     border: 2px solid #fff;
 }*/
 
-#username-label {
-    position: absolute;
+/*#username-label {
+    position: absolute;*/
 /*    top: 10px;*/
+    /*left: 10px;
+    color: white;
+    font-family: Arial, sans-serif;
+    z-index: 100;
+}*/
+
+#generalText {
+    position: absolute;
+    /*    top: 10px;*/
     left: 10px;
     color: white;
     font-family: Arial, sans-serif;
