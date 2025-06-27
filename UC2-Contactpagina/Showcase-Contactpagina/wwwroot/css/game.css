@@ -4,28 +4,27 @@
     overflow: hidden;
     background-color: #111;
 }
-
-/*canvas {
-    display: block;
-    margin: 0 auto;
-    background-color: #222;
-    border: 2px solid #fff;
-}*/
-
-/*#username-label {
-    position: absolute;*/
-/*    top: 10px;*/
-    /*left: 10px;
-    color: white;
-    font-family: Arial, sans-serif;
-    z-index: 100;
-}*/
-
+#myContainer {
+    display: flex;
+    width: 1415px;
+    flex-direction: row;
+    margin-left: -50px;
+}
 #generalText {
-    position: absolute;
-    /*    top: 10px;*/
-    left: 10px;
+/*    position: absolute;
+    left: 10px;*/
     color: white;
     font-family: Arial, sans-serif;
     z-index: 100;
+    flex:1;
+}
+
+#phaser-container {
+/*    position: absolute;
+    right: 50px;*/
+    width: 1200px; /* moet overeenkomen met Phaser config */
+    height: 700px; /* idem */
+    margin: auto;
+    flex:1;
+    /*overflow: hidden;*/ /* optioneel, zorgt dat canvas niet uitsteekt */
 }

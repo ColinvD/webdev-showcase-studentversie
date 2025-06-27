@@ -33,3 +33,4 @@ app.MapControllerRoute(
 app.MapHub<GameHub>("/gamehub");
 
 app.Run();
+public partial class Program { } // Nodig voor WebApplicationFactory

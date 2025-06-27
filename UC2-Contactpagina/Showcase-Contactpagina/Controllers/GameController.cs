@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Showcase_Contactpagina.Models;
-using System.Reflection;
 
 namespace Showcase_Contactpagina.Controllers
 {
@@ -60,7 +59,7 @@ namespace Showcase_Contactpagina.Controllers
             if (string.IsNullOrEmpty(username))
             {
                 // Niet ingelogd → redirect naar login
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Index");
             }
 
             ViewBag.Username = username;
