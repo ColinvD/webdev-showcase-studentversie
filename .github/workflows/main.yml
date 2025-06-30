@@ -62,4 +62,4 @@ jobs:
       run: npx cypress run
 
     - name: 🧪 Run xUnit tests
-      run: dotnet test ShowcaseTests/ShowcaseTests.csproj --verbosity normal
+      run: dotnet test UC2-Contactpagina/ShowcaseTests/ShowcaseTests.csproj --verbosity normal
