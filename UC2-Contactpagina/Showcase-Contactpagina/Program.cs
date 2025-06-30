@@ -7,6 +7,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 builder.Services.AddSignalR();
 builder.Services.AddSession();
+builder.WebHost.UseUrls("http://0.0.0.0:7150");
 
 var app = builder.Build();
 

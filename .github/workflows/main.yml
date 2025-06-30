@@ -1,4 +1,4 @@
-name: Run Cypress and xUnit Tests
+name: Run Cypress and xUnit Tests with Docker
 
 on:
   push:
@@ -7,52 +7,34 @@ on:
     branches: [main]
 
 jobs:
-  run-tests:
+  test:
     runs-on: ubuntu-latest
 
     steps:
     - name: 📥 Checkout code
       uses: actions/checkout@v4
 
-    # ------------------------------
-    # 🟣 .NET Setup
-    # ------------------------------
-    - name: 🛠 Set up .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
+    - name: 🐳 Build and start Docker containers
+      run: docker-compose up -d --build
 
-    - name: 🔧 Restore dependencies
-      run: dotnet restore UC2-Contactpagina/Showcase-Contactpagina.sln
-
-    # ------------------------------
-    # 🚀 Start frontend (poort 7150)
-    # ------------------------------
-    - name: 🚀 Start frontend in background
-      run: dotnet run --project Showcase-Contactpagina &
-    
-    - name: ⏱ Wait until frontend is ready on port 7150
+    - name: ⏱ Wait for frontend and backend
       working-directory: UC2-Contactpagina
-      run: npx wait-on http://localhost:7150
+      run: |
+        npx wait-on http://localhost:7150
+        npx wait-on http://localhost:5000
 
-    # ------------------------------
-    # 🧪 xUnit tests
-    # ------------------------------
-    - name: 🧪 Run xUnit tests
-      run: dotnet test ShowcaseTests/ShowcaseTests.csproj --no-restore --verbosity normal
-
-    # ------------------------------
-    # 🟢 Cypress tests
-    # ------------------------------
     - name: ⬢ Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
 
-    - name: 📦 Install Cypress deps
+    - name: 📦 Install Cypress dependencies
       working-directory: UC2-Contactpagina
       run: npm install
 
     - name: 🚨 Run Cypress tests
       working-directory: UC2-Contactpagina
       run: npx cypress run
+
+    - name: 🧪 Run xUnit tests
+      run: dotnet test ShowcaseTests/ShowcaseTests.csproj --verbosity normal

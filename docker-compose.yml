@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./UC2-Contactpagina/Showcase-Contactpagina
+    ports:
+      - "7150:7150"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./UC2-Contactpagina/ShowcaseAPI
+    ports:
+      - "5000:5000"
