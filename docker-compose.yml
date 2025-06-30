@@ -3,7 +3,8 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ./UC2-Contactpagina/Showcase-Contactpagina
+      context: ./UC2-Contactpagina/Showcase-Contactpagina/
+      dockerfile: ./Dockerfile
     ports:
       - "7150:7150"
     depends_on:
@@ -11,6 +12,7 @@ services:
 
   backend:
     build:
-      context: ./UC2-Contactpagina/ShowcaseAPI
+      context: ./UC2-Contactpagina/ShowcaseAPI/
+      dockerfile: ./Dockerfile
     ports:
       - "5000:5000"
