@@ -23,7 +23,7 @@ jobs:
       run: docker ps
 
     - name: 🐳 Docker logs backend
-      run: docker logs webdev-showcase-studentversie_backend_1
+      run: docker logs webdev-showcase-studentversie-backend-1
 
     - name: ⏱ Wait for backend ready
       run: |
