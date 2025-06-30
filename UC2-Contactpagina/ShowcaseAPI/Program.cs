@@ -12,8 +12,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-var env = Environment.GetEnvironmentVariable("CI");
-if (env == "true")
+var isCI = Environment.GetEnvironmentVariable("CI") == "true" ||
+           Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true" ||
+           Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true";
+
+if (isCI)
 {
     builder.WebHost.UseUrls("http://0.0.0.0:5000");
 }

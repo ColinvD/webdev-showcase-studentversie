@@ -20,7 +20,10 @@ jobs:
       run: docker compose up -d --build
 
     - name: 🐳 Show running containers
-      run: docker ps
+      run: docker ps -a
+
+    - name: 🐳 Backend logs
+      run: docker logs $(docker ps -aqf "name=backend")
 
     - name: 🐳 Docker logs backend
       run: docker logs webdev-showcase-studentversie-backend-1
