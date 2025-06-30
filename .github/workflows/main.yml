@@ -21,8 +21,9 @@ jobs:
     - name: ⏱ Wait for frontend and backend
       working-directory: UC2-Contactpagina
       run: |
-        npx wait-on http://localhost:7150
-        npx wait-on http://localhost:5000
+        npx wait-on http://localhost:7150 --timeout 60000 --verbose
+        npx wait-on http://localhost:5000 --timeout 60000 --verbose
+
 
     - name: ⬢ Set up Node.js
       uses: actions/setup-node@v4
