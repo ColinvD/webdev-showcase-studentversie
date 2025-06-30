@@ -14,28 +14,45 @@ jobs:
     - name: 📥 Checkout code
       uses: actions/checkout@v4
 
-    # ---------- Node + Cypress ----------
-    - name: 🟢 Set up Node.js
+    # ------------------------------
+    # 🟣 .NET Setup
+    # ------------------------------
+    - name: 🛠 Set up .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: 🔧 Restore dependencies
+      run: dotnet restore Showcase-Contactpagina.sln
+
+    # ------------------------------
+    # 🚀 Start frontend (poort 7150)
+    # ------------------------------
+    - name: 🚀 Start frontend in background
+      run: dotnet run --project Showcase-Contactpagina &
+    
+    - name: ⏱ Wait until frontend is ready on port 7150
+      working-directory: UC2-Contactpagina
+      run: npx wait-on http://localhost:7150
+
+    # ------------------------------
+    # 🧪 xUnit tests
+    # ------------------------------
+    - name: 🧪 Run xUnit tests
+      run: dotnet test ShowcaseTests/ShowcaseTests.csproj --no-restore --verbosity normal
+
+    # ------------------------------
+    # 🟢 Cypress tests
+    # ------------------------------
+    - name: ⬢ Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
 
-    - name: 📦 Install Cypress dependencies
+    - name: 📦 Install Cypress deps
       working-directory: UC2-Contactpagina
       run: npm install
 
-    - name: 🚀 Run Cypress tests
+    - name: 🚨 Run Cypress tests
       working-directory: UC2-Contactpagina
       run: npx cypress run
-
-    # ---------- .NET + xUnit ----------
-    - name: 🛠 Set up .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'  # Of pas dit aan naar jouw versie
-
-    - name: 🔍 Restore .NET dependencies
-      run: dotnet restore Showcase-Contactpagina.sln
-
-    - name: 🧪 Run xUnit tests
-      run: dotnet test ShowcaseTests/ShowcaseTests.csproj --no-restore --verbosity normal
