@@ -19,13 +19,31 @@ jobs:
     - name: 🐳 Build and start Docker containers
       run: docker compose up -d --build
 
+    - name: 🐳 Show running containers
+      run: docker ps
 
-    - name: ⏱ Wait for frontend and backend
-      working-directory: UC2-Contactpagina
+    - name: 🐳 Docker logs backend
+      run: docker logs webdev-showcase-studentversie_backend_1
+
+    - name: ⏱ Wait for backend ready
       run: |
-        npx wait-on http://localhost:7150 --timeout 60000 --verbose
-        npx wait-on http://localhost:5000/swagger/index.html --timeout 60000 --verbose
+        for i in {1..30}; do
+          echo "⏳ Probing http://localhost:5000/swagger/index.html..."
+          curl -sSf http://localhost:5000/swagger/index.html && echo "✅ Backend ready!" && exit 0
+          sleep 2
+        done
+        echo "❌ Backend did not respond in time"
+        exit 1
 
+    - name: ⏱ Wait for frontend ready
+      run: |
+        for i in {1..30}; do
+          echo "⏳ Probing http://localhost:7150..."
+          curl -sSf http://localhost:7150 && echo "✅ Frontend ready!" && exit 0
+          sleep 2
+        done
+        echo "❌ Frontend did not respond in time"
+        exit 1
 
     - name: ⬢ Set up Node.js
       uses: actions/setup-node@v4
