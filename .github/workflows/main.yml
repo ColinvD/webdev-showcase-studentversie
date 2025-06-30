@@ -22,7 +22,7 @@ jobs:
       working-directory: UC2-Contactpagina
       run: |
         npx wait-on http://localhost:7150 --timeout 60000 --verbose
-        npx wait-on http://localhost:5000 --timeout 60000 --verbose
+        npx wait-on http://localhost:5000/swagger/index.html --timeout 60000 --verbose
 
 
     - name: ⬢ Set up Node.js
