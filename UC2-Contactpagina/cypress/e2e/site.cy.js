@@ -1,6 +1,6 @@
 describe('General Showcase', () => {
   beforeEach(() => {
-    cy.visit('https://localhost:7150'); // URL naar je spelpagina
+    cy.visit('http://localhost:7150'); // URL naar je spelpagina
   })
   it('Gets, types and asserts contactpage', () => {
     cy.contains('Contact').click()

@@ -1,6 +1,6 @@
 describe('Racing Game', () => {
   beforeEach(() => {
-    cy.visit('https://localhost:7150/Game'); // URL naar je spelpagina
+    cy.visit('http://localhost:7150/Game'); // URL naar je spelpagina
   })
 
   it("Register normal player",()=>{
