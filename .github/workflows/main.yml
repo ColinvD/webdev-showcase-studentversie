@@ -23,7 +23,7 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: 🔧 Restore dependencies
-      run: dotnet restore Showcase-Contactpagina.sln
+      run: dotnet restore UC2-Contactpagina/Showcase-Contactpagina.sln
 
     # ------------------------------
     # 🚀 Start frontend (poort 7150)
